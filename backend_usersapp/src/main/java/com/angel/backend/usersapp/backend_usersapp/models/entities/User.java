@@ -9,9 +9,15 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UK_username", columnNames = {"username"}),
+        @UniqueConstraint(name = "UK_email", columnNames = {"email"})
+    }
+)
 public class User {
 
     @Id
@@ -20,7 +26,7 @@ public class User {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, name = "username", nullable = false)
     private String username;
 
     @NotBlank
@@ -28,7 +34,7 @@ public class User {
 
     @NotBlank
     @Email(message = "Email should be valid")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, name = "email", nullable = false)
     private String email;
 
     

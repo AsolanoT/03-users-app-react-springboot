@@ -82,6 +82,21 @@ export const useUsers = () => {
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 setErrors(error.response.data);
+            } else if (error.response && error.response.status === 500 ) {
+
+                    //mysql> SHOW INDEX FROM users; 
+                if (error.response.data?.message?.includes('UK_username')) {
+                    setErrors({
+                        username: 'El nombre de usuario ya existe',
+                    });
+                }
+                    //mysql> SHOW INDEX FROM users; 
+                if (error.response.data?.message?.includes('UK_email')) {
+                    setErrors({
+                        email: 'El Email de usuario ya existe',
+                    });
+                }
+                
             } else {
                 throw error;
             }

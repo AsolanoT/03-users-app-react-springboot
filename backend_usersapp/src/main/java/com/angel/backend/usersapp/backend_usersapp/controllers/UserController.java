@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
-import com.angel.backend.usersapp.backend_usersapp.models.entities.UserRequest;
+import com.angel.backend.usersapp.backend_usersapp.models.request.UserRequest;
 import com.angel.backend.usersapp.backend_usersapp.services.UserService;
 
 import jakarta.validation.Valid;

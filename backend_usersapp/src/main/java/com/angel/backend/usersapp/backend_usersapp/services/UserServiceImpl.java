@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
-import com.angel.backend.usersapp.backend_usersapp.models.entities.UserRequest;
+import com.angel.backend.usersapp.backend_usersapp.models.request.UserRequest;
 import com.angel.backend.usersapp.backend_usersapp.repositories.UserRepository;
 
 @Service
