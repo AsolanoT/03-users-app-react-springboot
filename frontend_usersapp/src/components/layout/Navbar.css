@@ -1,0 +1,268 @@
+/* Navbar principal */
+.custom-navbar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* Logo */
+.navbar-brand-custom {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00d4ff 0%, #7b2ffc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.navbar-brand-custom:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+}
+
+/* Toggler para móvil */
+.navbar-toggler-custom {
+    border: 2px solid rgba(0, 212, 255, 0.3) !important;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.navbar-toggler-custom .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* ========== ESTILOS PARA NAVEGACIÓN - CORREGIDO ========== */
+
+/* Reset e intensidad de color para los links (Aumentamos especificidad) */
+.custom-navbar.navbar .navbar-nav .nav-link,
+.custom-navbar.navbar .navbar-nav .nav-link:link,
+.custom-navbar.navbar .navbar-nav .nav-link:visited,
+.custom-navbar.navbar .navbar-nav .nav-link:focus {
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    background: transparent !important;
+    opacity: 0.9;
+}
+
+/* Efecto hover en links */
+.custom-navbar.navbar .navbar-nav .nav-link:hover {
+    color: #00d4ff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+/* Link activo (NavLink de React Router) */
+.custom-navbar.navbar .navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(0, 212, 255, 0.15) !important;
+    border: 1px solid rgba(0, 212, 255, 0.2) !important;
+    opacity: 1;
+}
+
+/* Línea decorativa debajo del link activo */
+.custom-navbar.navbar .navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, #00d4ff, #7b2ffc);
+    border-radius: 2px;
+    animation: slideIn 0.3s ease;
+}
+
+/* Animación para la línea decorativa */
+@keyframes slideIn {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 30px;
+        opacity: 1;
+    }
+}
+
+/* Efecto de brillo al pasar el mouse */
+.custom-navbar.navbar .navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.5s ease;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.custom-navbar.navbar .navbar-nav .nav-link:hover::before {
+    left: 100%;
+}
+
+/* ========== FIN ESTILOS NAVEGACIÓN ========== */
+
+/* Contenedor de usuario */
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Badge de usuario */
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 16px 6px 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.user-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+/* Avatar */
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    flex-shrink: 0;
+}
+
+/* Nombre de usuario */
+.user-name {
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Botón Logout */
+.btn-logout {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    border: none;
+    border-radius: 50px;
+    padding: 8px 24px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 25px rgba(255, 65, 108, 0.5);
+}
+
+.btn-logout:active {
+    transform: scale(0.95);
+}
+
+/* ========== RESPONSIVE MEJORADO ========== */
+
+@media (max-width: 992px) {
+    .custom-navbar.navbar .navbar-nav {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .custom-navbar.navbar .navbar-nav .nav-item {
+        margin: 2px 0;
+        width: 100%;
+    }
+
+    .custom-navbar.navbar .navbar-nav .nav-link {
+        display: block !important;
+        padding: 10px 18px !important;
+        text-align: center;
+        width: 100%;
+    }
+
+    .custom-navbar.navbar .navbar-nav .nav-link.active::after {
+        bottom: 4px;
+    }
+
+    .user-container {
+        margin-top: 15px;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .user-badge {
+        justify-content: center;
+        padding: 8px 16px;
+    }
+
+    .btn-logout {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand-custom {
+        font-size: 1.4rem;
+    }
+
+    .user-name {
+        font-size: 0.85rem;
+    }
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .btn-logout {
+        font-size: 0.8rem;
+        padding: 6px 18px;
+    }
+
+    .custom-navbar.navbar .navbar-nav .nav-link {
+        font-size: 0.9rem;
+        padding: 8px 14px !important;
+    }
+}
