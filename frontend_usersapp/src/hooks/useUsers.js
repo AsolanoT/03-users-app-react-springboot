@@ -13,6 +13,12 @@ const initialUseForm = {
     email: '',
 }
 
+const initialErrors = {
+    username: '',
+    password: '',
+    email: '',
+}
+
 export const useUsers = () => {
 
     // Estado de los usuarios: useReducer gestiona la lista de usuarios
@@ -25,6 +31,9 @@ export const useUsers = () => {
 
     // Controla si el formulario de usuario está visible o no
     const [visibleForm, setvisibleForm] = useState(false);
+
+    // Estado de errores del formulario: almacena mensajes de error para cada campo
+    const [errors, setErrors] = useState(initialErrors);
 
     // Hook de enrutamiento para navegar entre pantallas
     const navigate = useNavigate();
@@ -39,33 +48,45 @@ export const useUsers = () => {
         });
     }
 
-    const handlerAddUser = async(user) => {
+    const handlerAddUser = async (user) => {
         console.log(user);
         let response;
 
-        if (user.id === 0) {
-            response = await save(user);
-        } else {
-            response = await update(user);
-        }
+        try {
 
-        dispatch({
-            type: (user.id === 0) ? 'addUser' : 'updateUser',
-            payload: response.data,
-        })
+            if (user.id === 0) {
+                response = await save(user);
+            } else {
+                response = await update(user);
+            }
 
-        Swal.fire(
-            (user.id === 0) ?
-                "Usuario creado" :
-                "Usuario actualizado",
-            (user.id === 0) ?
-                "El usuario ha sido creado con exito" :
-                "El usuario ha sido actualizado con exito",
-            "success"
-        );
-        handlerCloseForm();
-        navigate('/users');
-    };
+            dispatch({
+                type: (user.id === 0) ? 'addUser' : 'updateUser',
+                payload: response.data,
+            })
+
+            Swal.fire(
+                (user.id === 0) ?
+                    "Usuario creado" :
+                    "Usuario actualizado",
+                (user.id === 0) ?
+                    "El usuario ha sido creado con exito" :
+                    "El usuario ha sido actualizado con exito",
+                "success"
+            );
+            handlerCloseForm();
+            navigate('/users');
+
+
+
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setErrors(error.response.data);
+            } else {
+                throw error;
+            }
+        };
+    }
 
     const handlerRemoveUser = (id) => {
 
@@ -104,6 +125,7 @@ export const useUsers = () => {
     const handlerCloseForm = () => {
         setvisibleForm(false);
         setUserSelected(initialUseForm);
+        setErrors({});
     }
 
     return {
@@ -112,6 +134,7 @@ export const useUsers = () => {
         userSelected,
         initialUseForm,
         visibleForm,
+        errors,
 
         // métodos para manipular el estado de usuarios
         handlerAddUser,
@@ -120,5 +143,5 @@ export const useUsers = () => {
         handlerOpenForm,
         handlerCloseForm,
         getusers,
-    }
+    };
 }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
+import com.angel.backend.usersapp.backend_usersapp.models.entities.UserRequest;
 import com.angel.backend.usersapp.backend_usersapp.services.UserService;
 
 import jakarta.validation.Valid;
@@ -68,7 +69,7 @@ public class UserController {
     
     // Actualiza los datos de un usuario ya existente, identificado por su ID.
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody UserRequest user, BindingResult result, @PathVariable Long id) {
         
         if(result.hasErrors()) {
             return validation(result);

@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -24,10 +23,10 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotEmpty
+    @NotBlank
     private String password;
 
-    @NotEmpty
+    @NotBlank
     @Email(message = "Email should be valid")
     @Column(unique = true, nullable = false)
     private String email;

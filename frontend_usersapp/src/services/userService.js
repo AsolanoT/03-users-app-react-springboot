@@ -21,22 +21,19 @@ export const save = async ({ username, email, password }) => {
         });
 
     } catch (error) {
-        console.log(error);
+        throw error;
     }
-
-    return undefined;
 }
 
 export const update = async ({ id, username, email }) => {
     try {
         return await axios.put(`${BASE_URL}/${id}`, { 
             username, 
-            email, 
+            email,
         });
     } catch (error) {
-        console.log(error);
+        throw error;
     }
-    return undefined;
 }
 
 export const remove = async (id) => {
