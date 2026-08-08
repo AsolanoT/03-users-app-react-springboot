@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
 import com.angel.backend.usersapp.backend_usersapp.services.UserService;
 
+import jakarta.validation.Valid;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,22 +57,32 @@ public class UserController {
 
     // Crea un nuevo usuario con los datos enviados en el cuerpo de la petición.
     @PostMapping("/users")
-    public ResponseEntity<?> create(@RequestBody User user) {
+    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
+        
+        if(result.hasErrors()) {
+            return validation(result);
+        }
+        
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
     }
-
+    
     // Actualiza los datos de un usuario ya existente, identificado por su ID.
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
+        
+        if(result.hasErrors()) {
+            return validation(result);
+        }
+        
         Optional<User> o = service.update(user, id);
-
+        
         if(o.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
         }
-
+        
         return ResponseEntity.notFound().build();
     }
-
+    
     // Elimina un usuario por su ID cuando este existe en la base de datos.
     @DeleteMapping("/users/{id}") 
     public ResponseEntity<?> remove(@PathVariable Long id) {
@@ -79,4 +94,12 @@ public class UserController {
         return ResponseEntity.notFound().build();  
     }
     
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+
+        result.getFieldErrors().forEach(err -> {
+            errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
+    }
 }
