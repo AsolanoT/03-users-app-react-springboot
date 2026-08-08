@@ -2,15 +2,9 @@ import { useReducer, useState } from "react";
 import { usersReducer } from "../reducers/usersReducer";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { findAll } from "../services/userService";
 
-const initialUsers = [
-    {
-        id: 1,
-        username: 'Hr',
-        password: '12345',
-        email: 'agsolano-2023a@corhuila.edu.co'
-    },
-]
+const initialUsers = []
 
 const initialUseForm = {
     id: 0,
@@ -34,6 +28,16 @@ export const useUsers = () => {
 
     // Hook de enrutamiento para navegar entre pantallas
     const navigate = useNavigate();
+
+    // Funcion para obtener todos los usuarios desde el backend 
+    const getusers = async () => {
+        const result = await findAll();
+        console.log(result);
+        dispatch({
+            type: 'loadingUsers',
+            payload: result.data,
+        });
+    }
 
     const handlerAddUser = (user) => {
 
@@ -105,6 +109,7 @@ export const useUsers = () => {
         handlerRemoveUser,
         handlerUserSelectedForm,
         handlerOpenForm,
-        handlerCloseForm
+        handlerCloseForm,
+        getusers,
     }
 }

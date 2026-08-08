@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserModalForm } from "../components/UserModalForm";
 import { UsersList } from "../components/UsersList"
 import { UserContext } from "../context/UserContext";
@@ -6,15 +6,20 @@ import { UserContext } from "../context/UserContext";
 export const UsersPage = () => {
 
     const {
-    users,
-    visibleForm,
-    handlerOpenForm,
-} = useContext(UserContext);
+        users,
+        visibleForm,
+        handlerOpenForm,
+        getusers,
+    } = useContext(UserContext);
+
+    useEffect(() => {
+        getusers();
+    }, []);
 
     return (
         <>
             {!visibleForm ||
-                <UserModalForm/>
+                <UserModalForm />
             }
             <div className="container my-4">
                 <h2>Users App</h2>
