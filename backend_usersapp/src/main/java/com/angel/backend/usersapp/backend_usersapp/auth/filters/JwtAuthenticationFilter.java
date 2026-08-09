@@ -5,13 +5,13 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.catalina.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +21,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.angel.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.*;
+
+// Este filtro extiende UsernamePasswordAuthenticationFilter para interceptar
+// la petición POST /login y automatizar el flujo de autenticación por username/password.
+// Cuando el cliente envía credenciales a /login, Spring llama a attemptAuthentication,
+// valida esas credenciales con AuthenticationManager y luego ejecuta los métodos
+// successfulAuthentication o unsuccessfulAuthentication según el resultado.
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
@@ -44,8 +51,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             username = user.getUsername();
             password = user.getPassword();
 
-            logger.info("Username desde request InputStream (raw) " + username);
-            logger.info("Password desde request InputStream (raw) " + password);
+            //Me sirve para revisar en la consola de spring, que datos se estan corriendo
+            // logger.info("Username desde request InputStream (raw) " + username);
+            // logger.info("Password desde request InputStream (raw) " + password);
         } catch (StreamReadException e) {
             e.printStackTrace();
         } catch (DatabindException e) {
@@ -67,10 +75,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((org.springframework.security.core.userdetails.User) authResult.getPrincipal())
                 .getUsername();
 
-        String originalInput = "algun_token_con_alguna_frase_secreta." + username;
+        String originalInput = SECRET_KEY + ":" + username;
         String token = Base64.getEncoder().encodeToString(originalInput.getBytes());
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
 
         Map<String, Object> body = new HashMap<>();
         body.put("token", token);
