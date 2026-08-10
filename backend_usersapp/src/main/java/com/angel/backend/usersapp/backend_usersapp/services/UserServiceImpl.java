@@ -1,5 +1,6 @@
 package com.angel.backend.usersapp.backend_usersapp.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,8 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.angel.backend.usersapp.backend_usersapp.models.entities.Role;
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
 import com.angel.backend.usersapp.backend_usersapp.models.request.UserRequest;
+import com.angel.backend.usersapp.backend_usersapp.repositories.RoleRepository;
 import com.angel.backend.usersapp.backend_usersapp.repositories.UserRepository;
 
 @Service
@@ -16,10 +19,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -38,6 +43,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Optional<Role> o = roleRepository.findByName("ROLE_USER");
+
+        List<Role> roles = new ArrayList<>();
+        
+        if (o.isPresent()) {
+            roles.add(o.orElseThrow());
+        }
+        user.setRoles(roles);
+
         return repository.save(user);
     }
 

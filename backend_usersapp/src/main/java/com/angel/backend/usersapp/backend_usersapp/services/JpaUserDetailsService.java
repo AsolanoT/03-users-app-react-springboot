@@ -1,8 +1,8 @@
 package com.angel.backend.usersapp.backend_usersapp.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,8 +43,10 @@ public class JpaUserDetailsService implements UserDetailsService {
         com.angel.backend.usersapp.backend_usersapp.models.entities.User user = o.orElseThrow();
 
         // Se crean los permisos/roles que tendrá el usuario autenticado.
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = user.getRoles()
+            .stream()
+            .map(r -> new SimpleGrantedAuthority(r.getName()))
+            .collect(Collectors.toList());
 
         // Se devuelve un objeto User de Spring Security con el username, contraseña, estado y roles.
         // Estos datos son usados por el framework para validar la autenticación y autorizar accesos.
