@@ -2,7 +2,6 @@ package com.angel.backend.usersapp.backend_usersapp.auth.filters;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import static com.angel.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,22 +41,28 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         }
 
         String token = header.replace(PREFIX_TOKEN, "");
-        byte[] tokenDecodeBytes = Base64.getDecoder().decode(token);
-        String tokenDecode = new String(tokenDecodeBytes);
-
-        String[] tokenArr = tokenDecode.split(":");
-        String secret = tokenArr[0];
-        String username = tokenArr[1];
         
-        if (SECRET_KEY.equals(secret)) {
+        try {
+
+            // Valida la firma del JWT y extrae sus claims (datos almacenados dentro del token).
+            Claims claims = Jwts.parser()
+            .verifyWith(SECRET_KEY)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+
+            String username = claims.getSubject();
+
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken (username, null, 
                 authorities);
             SecurityContextHolder.getContext().setAuthentication (authentication);
             chain.doFilter(request, response);
-        } else {
+        } catch(JwtException e) {
             Map<String, String> body = new HashMap<>();
+            body.put("message", "El token JWT no es valido!");
+
             body.put("message", "El token JWT no es valido!");
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(body));
