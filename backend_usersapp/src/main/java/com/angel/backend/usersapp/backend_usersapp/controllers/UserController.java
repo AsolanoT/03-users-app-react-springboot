@@ -3,6 +3,7 @@ package com.angel.backend.usersapp.backend_usersapp.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.angel.backend.usersapp.backend_usersapp.models.dto.UserDto;
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
 import com.angel.backend.usersapp.backend_usersapp.models.request.UserRequest;
 import com.angel.backend.usersapp.backend_usersapp.services.UserService;
@@ -38,14 +39,14 @@ public class UserController {
 
     // Obtiene y devuelve la lista completa de usuarios registrados.
     @GetMapping("/users")
-    public List<User> list() {
+    public List<UserDto> list() {
         return service.findAll();
     }
 
     // Busca un usuario específico por su ID y devuelve la información si existe.
     @GetMapping("/users/{id}")
     public ResponseEntity<?> show(@PathVariable Long id){
-        Optional<User> userOptional = service.findById(id);
+        Optional<UserDto> userOptional = service.findById(id);
 
         if(userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.orElseThrow());
@@ -73,7 +74,7 @@ public class UserController {
             return validation(result);
         }
         
-        Optional<User> o = service.update(user, id);
+        Optional<UserDto> o = service.update(user, id);
         
         if(o.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
@@ -85,7 +86,7 @@ public class UserController {
     // Elimina un usuario por su ID cuando este existe en la base de datos.
     @DeleteMapping("/users/{id}") 
     public ResponseEntity<?> remove(@PathVariable Long id) {
-        Optional<User> o = service.findById(id);
+        Optional<UserDto> o = service.findById(id);
         if(o.isPresent()) {
             service.remove(id);
             return ResponseEntity.noContent().build(); //204
