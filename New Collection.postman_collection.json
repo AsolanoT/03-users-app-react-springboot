@@ -1,0 +1,187 @@
+{
+  "info": {
+    "_postman_id": "e51e781f-a9f8-46d8-8083-31db78b3c9c0",
+    "name": "New Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "34025890"
+  },
+  "item": [
+    {
+      "name": "GET USERS",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/users",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LOGIN",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"12345\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/login",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET USERS ID",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiLCJGQUNUT1JfUEFTU1dPUkQiXSwiaXNBZG1pbiI6ZmFsc2UsInN1YiI6ImF1cm9yYVlBTkciLCJpYXQiOjE3ODcwMTYyNDMsImV4cCI6MTc4NzAxOTg0M30.NW9VamoB8HjL4Sc8n6_41Y3Lnv_AiTjh1Q9JZe0hgHw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/users/8",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "8"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST USERS",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIiwiRkFDVE9SX1BBU1NXT1JEIl0sImlzQWRtaW4iOnRydWUsInN1YiI6ImFkbWluIiwiaWF0IjoxNzg3MDE2MzEyLCJleHAiOjE3ODcwMTk5MTJ9.UwzQ2Hlj9O9Xdz63a3ZlKK__ImrSejGsA8eLHZd6N2I",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"auroraYANG\",\r\n    \"email\": \"yauroraet@gmail.com\",\r\n    \"password\": \"aurora\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/users",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIiwiRkFDVE9SX1BBU1NXT1JEIl0sImlzQWRtaW4iOnRydWUsInN1YiI6ImFkbWluIiwiaWF0IjoxNzg3MDE2MzEyLCJleHAiOjE3ODcwMTk5MTJ9.UwzQ2Hlj9O9Xdz63a3ZlKK__ImrSejGsA8eLHZd6N2I",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"12345\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/users/3",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "users",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

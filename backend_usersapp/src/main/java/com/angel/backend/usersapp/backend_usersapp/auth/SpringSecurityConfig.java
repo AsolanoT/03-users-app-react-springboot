@@ -39,6 +39,11 @@ public class SpringSecurityConfig {
 
         return http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users/").hasRole("ADMIN")
+                .requestMatchers("/api/users/**").hasRole("ADMIN")
+                // .requestMatchers(HttpMethod.DELETE, "/api/users/{id)").hasAnyRole("USER", "ADMIN")
+                // .requestMatchers(HttpMethod.PUT, "/api/users/{id)").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
             )
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))

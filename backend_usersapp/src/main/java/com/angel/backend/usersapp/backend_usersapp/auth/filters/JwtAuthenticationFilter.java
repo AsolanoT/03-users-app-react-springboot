@@ -1,14 +1,18 @@
 package com.angel.backend.usersapp.backend_usersapp.auth.filters;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.angel.backend.usersapp.backend_usersapp.models.entities.User;
@@ -16,6 +20,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -76,9 +81,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((org.springframework.security.core.userdetails.User) authResult.getPrincipal())
                 .getUsername();
 
+        Collection <? extends GrantedAuthority> roles = authResult.getAuthorities();
+        boolean isAdmin = roles.stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+        // Construye los datos adicionales que se almacenarán dentro del payload del JWT.
+        // Solo nos interesan los nombres de los roles (String), no el objeto GrantedAuthority
+        List<String> authorityNames = roles.stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+
+        // Construye los datos adicionales que se almacenarán dentro del payload del JWT.
+        Claims claims = Jwts.claims()
+            .add("authorities", authorityNames)
+            .add("isAdmin", isAdmin)
+            .add("username", username)
+            .build();
+        
         // Genera un JWT con el nombre de usuario como sujeto, la fecha de emisión
         // y una fecha de expiración de una hora.
         String token = Jwts.builder()
+                .claims(claims)
                 .subject(username)
                 .signWith(SECRET_KEY)
                 .issuedAt(new Date())
